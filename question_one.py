@@ -29,16 +29,15 @@ def checkLinksRandomnessAndEffect():
   element = driver.find_element(By.XPATH, "//div[@id='search-suggestions-box']/a")
   # sets the text of the first link to a variable link_a
   link_a = element.text
-  print link
-  driver.back()
+  print link_a
 
+  driver.close()
 
 
 
 # link = driver.find_element_by_tag_name('a')
 # print link
 
-driver.close()
 # 2.  Verify that the "Recently Seen Ads" are no more than half an hour old.
 
 # 3.  Verify that the ad counts are correct, even when they are over 100.
