@@ -15,19 +15,26 @@ class MoatSearch(unittest.TestCase):
   def setUp(self):
     self.driver = webdriver.Firefox()
 
-  def test_try_these_link_randomness(self):
+  def test_for_correct_page(self):
     driver = self.driver
     driver.get("http://www.moat.com") #load page
     self.assertIn("Moat", driver.title)
+
+  def test_try_these_link_randomness(self):
+    driver = self.driver
+    driver.get("http://www.moat.com") #load page
     tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
-    link1 = tryTheseLinksList[0].text
-    link2 = tryTheseLinksList[1].text
-    link3 = tryTheseLinksList[2].text
+    links1 = []
+    links1.append(tryTheseLinksList[0].text)
+    links1.append(tryTheseLinksList[1].text)
+    links1.append(tryTheseLinksList[2].text)
     driver.refresh()
     tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
-    link4 = tryTheseLinksList[0].text
-    link5 = tryTheseLinksList[1].text
-    link6 = tryTheseLinksList[2].text
+    links2 = []
+    links2.append(tryTheseLinksList[0].text)
+    links2.append(tryTheseLinksList[1].text)
+    links2.append(tryTheseLinksList[2].text)
+    self.assertTrue(links1 != links2)
 
 
   def tearDown(self):
