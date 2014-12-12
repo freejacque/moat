@@ -1,4 +1,4 @@
-#!/usr/bin/python
+
 
 # import selenium
 # import sys
@@ -15,24 +15,25 @@ from selenium.webdriver.common.by import By
 import time
 import requests
 
-
-
-
-
 # 1.  Verify that the "Try These" links are random and that they work.
-def checkLinksRandomnessAndEffect():
+def findTryTheseLinks():
   driver = webdriver.Firefox()
   driver.get("http://www.moat.com") #load page
   # checks that it hits the correct url
   assert "Moat" in driver.title
   # finds the a tags located inside the div with id search-suggestions-box
-  element = driver.find_element(By.XPATH, "//div[@id='search-suggestions-box']/a")
+  tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
   # sets the text of the first link to a variable link_a
-  link_a = element.text
-  print link_a
-
+  link1 = tryTheseLinksList[0].text
+  link2 = tryTheseLinksList[1].text
+  link3 = tryTheseLinksList[2].text
   driver.close()
 
+
+# return check1 = findTryTheseLinks()
+# return check2 = findTryTheseLinks()
+# if check1 == check2
+#   true
 
 
 # link = driver.find_element_by_tag_name('a')
