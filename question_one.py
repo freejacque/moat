@@ -78,8 +78,8 @@ class MoatSearch(unittest.TestCase):
       if i == 3:
         break
     time.sleep(2)
-    ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
-    numberOfAds = int(len(ads) + 1)
+    ads = driver.find_elements(By.XPATH, "*//div[@class='adcontainer']")
+    numberOfAds = int(len(ads))
     print siteAdCount
     print numberOfAds
     self.assertTrue(siteAdCount == numberOfAds)
