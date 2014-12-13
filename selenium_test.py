@@ -1,7 +1,6 @@
 # Question 1:
 # Please write a small handful of Selenium tests in Python against http://www.moat.com:
 
-
 import unittest
 import random
 import time
@@ -11,6 +10,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+
 # from selenium.common.exceptions import NoSuchElementException
 # from selenium.webdriver.support.ui import Select
 
@@ -65,30 +66,46 @@ class MoatSearch(unittest.TestCase):
   #     self.assertTrue(ageOfAd <= 30)
 
   # 3.  Verify that the ad counts are correct, even when they are over 100.
-  def test_ad_counts_are_correct(self):
+  # def test_ad_counts_are_correct(self):
+  #   driver = self.driver
+  #   driver.get("http://www.moat.com")
+  #   searchInput = driver.find_element_by_name("q")
+  #   searchInput.send_keys("pizza hut")
+  #   searchInput.send_keys(Keys.RETURN)
+  #   printedNumOfAds  = driver.find_elements(By.XPATH, "//p[@class='query-summary']")
+  #   siteAdCount = int(printedNumOfAds[0].text.strip(' ads for pizza hut'))
+  #   i = 0
+  #   while i < 3:
+  #     time.sleep(2)
+  #     moreAdsButton = driver.find_elements(By.XPATH, "//div[@class='more-holder']/button")
+  #     moreAdsButton[0].click()
+  #     print "clicking"
+  #     i += 1
+
+  #     if i == 3:
+  #       break
+  #   time.sleep(2)
+  #   ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
+  #   numberOfAds = int(len(ads) + 1)
+  #   print siteAdCount
+  #   print numberOfAds
+  #   self.assertTrue(siteAdCount == numberOfAds)
+
+  # 4.  Verify the "Share this Ad" feature.
+  def test_verify_share_this_ad_feature(self):
     driver = self.driver
     driver.get("http://www.moat.com")
     searchInput = driver.find_element_by_name("q")
     searchInput.send_keys("pizza hut")
     searchInput.send_keys(Keys.RETURN)
-    printedNumOfAds  = driver.find_elements(By.XPATH, "//p[@class='query-summary']")
-    siteAdCount = int(printedNumOfAds[0].text.strip(' ads for pizza hut'))
-    i = 0
-    while i < 3:
-      time.sleep(2)
-      moreAdsButton = driver.find_elements(By.XPATH, "//div[@class='more-holder']/button")
-      moreAdsButton[0].click()
-      print "clicking"
-      i += 1
-
-      if i == 3:
-        break
-    time.sleep(2)
     ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
-    numberOfAds = int(len(ads))
-    print siteAdCount
-    print numberOfAds
-    self.assertTrue(siteAdCount == numberOfAds)
+    ad = ads[0]
+    Hover = ActionChains(driver).move_to_element(ad)
+    Hover.perform()
+    shareThisAd = driver.find_elements(By.XPATH, "//div[@class='link5']/a")
+    shareThisAdText = shareThisAd[0].get_attribute('text')
+    self.assertEqual("Share this ad", shareThisAdText)
+
 
   def tearDown(self):
     self.driver.close()
