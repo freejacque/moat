@@ -73,6 +73,8 @@ class MoatSearch(unittest.TestCase):
     # element = WebDriverWait(driver, 30).until(
     #   EC.presence_of_element_located((By.XPATH, "//div[@class='columns-frame']"))
     #   )
+    printedNumOfAds  = driver.find_elements(By.XPATH, "//p[@class='query-summary']")
+    siteAdCount = int(printedNumOfAds[0].text.strip(' ads for pizza hut'))
     numberOfAds = 0
     ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
     numberOfAds += int(len(ads))
