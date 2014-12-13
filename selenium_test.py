@@ -39,27 +39,27 @@ class MoatSearch(unittest.TestCase):
   #   self.assertTrue(links1 != links2)
 
   # and that they work.
-  # def test_try_these_links_work(self):
-  #   driver = self.driver
-  #   driver.get("http://www.moat.com")
-  #   tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
-  #   randomLink = random.choice(tryTheseLinksList)
-  #   linkText = randomLink.text.strip('u').lower()
-  #   print linkText
-  #   randomLink.click()
-  #   querySummary = driver.find_elements(By.XPATH, "//p[@class='query-summary']/a")
-  #   queryText = querySummary[0].text
-  #   print queryText
-  #   self.assertTrue(linkText == queryText)
+  def test_try_these_links_work(self):
+    driver = self.driver
+    driver.get("http://www.moat.com")
+    tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
+    randomLink = random.choice(tryTheseLinksList)
+    linkText = randomLink.text.strip('u').lower()
+    print linkText
+    randomLink.click()
+    querySummary = driver.find_elements(By.XPATH, "//p[@class='query-summary']/a")
+    queryText = querySummary[0].text
+    print queryText
+    self.assertTrue(linkText == queryText)
 
   # 2.  Verify that the "Recently Seen Ads" are no more than half an hour old.
   def test_recently_seen_ads_less_than_half_hour_old(self):
     driver = self.driver
     driver.get("http://www.moat.com")
-    recentlySeenAdsList = driver.find_elements(By.XPATH, "*//div[@id='search-sub']/ul/div/li[@class='featured-agencies']/div[@class='hpads']/h2")
-    print recentlySeenAdsList
-    # for ad in recentlySeenAdsList:
-    #   print ad
+    recentlySeenAdsList = driver.find_elements(By.XPATH, "*//li[@class='featured-agencies']/h2")
+    for ad in recentlySeenAdsList:
+      ageOfAd = int(ad.text.strip(' minutes ago'))
+      self.assertTrue(ageOfAd <= 30)
 
 
   def tearDown(self):
