@@ -20,6 +20,7 @@ class MoatSearch(unittest.TestCase):
     driver.get("http://www.moat.com") #load page
     self.assertIn("Moat", driver.title)
 
+  # 1.  Verify that the "Try These" links are random
   def test_try_these_link_randomness(self):
     driver = self.driver
     driver.get("http://www.moat.com") #load page
@@ -35,6 +36,19 @@ class MoatSearch(unittest.TestCase):
     links2.append(tryTheseLinksList[1].text)
     links2.append(tryTheseLinksList[2].text)
     self.assertTrue(links1 != links2)
+
+  # and that they work.
+  def test_try_these_links_work(self):
+    driver = self.driver
+    driver.get("http://www.moat.com") #load page
+    tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
+    for link in tryTheseLinksList:
+      linkText = link.text.strip('u')
+      link.click()
+      searchInput = driver.find_element_by_id('lb02')
+      searchText = searchInput.value
+      print searchText
+      # self.assertTrue(linkText == searchText)
 
 
   def tearDown(self):
