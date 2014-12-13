@@ -70,11 +70,20 @@ class MoatSearch(unittest.TestCase):
     searchInput = driver.find_element_by_name("q")
     searchInput.send_keys("pizza hut")
     searchInput.send_keys(Keys.RETURN)
-    element = WebDriverWait(driver, 30).until(
-      EC.presence_of_element_located((By.XPATH, "//div[@class='columns-frame']"))
-      )
-    ads = driver.find_elements(By.XPATH, "*//div[@class='adcontainer']/div[@class='ad']")
-    print ads
+    # element = WebDriverWait(driver, 30).until(
+    #   EC.presence_of_element_located((By.XPATH, "//div[@class='columns-frame']"))
+    #   )
+    numberOfAds = 0
+    ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
+    numberOfAds += int(len(ads))
+    print numberOfAds
+    # found = False
+    # while driver.find_elements(By.XPATH, "//div[@class='more-holder']/button"); present == true
+    moreAdsButton = driver.find_elements(By.XPATH, "//div[@class='more-holder']/button")
+    moreAdsButton[0].click()
+    ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
+    numberOfAds += int(len(ads))
+    print numberOfAds
 
   def tearDown(self):
     self.driver.close()
