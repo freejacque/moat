@@ -8,6 +8,8 @@ from sst.actions import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # from selenium.common.exceptions import NoSuchElementException
 # from selenium.webdriver.support.ui import Select
 
@@ -39,28 +41,40 @@ class MoatSearch(unittest.TestCase):
   #   self.assertTrue(links1 != links2)
 
   # and that they work.
-  def test_try_these_links_work(self):
-    driver = self.driver
-    driver.get("http://www.moat.com")
-    tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
-    randomLink = random.choice(tryTheseLinksList)
-    linkText = randomLink.text.strip('u').lower()
-    print linkText
-    randomLink.click()
-    querySummary = driver.find_elements(By.XPATH, "//p[@class='query-summary']/a")
-    queryText = querySummary[0].text
-    print queryText
-    self.assertTrue(linkText == queryText)
+  # def test_try_these_links_work(self):
+  #   driver = self.driver
+  #   driver.get("http://www.moat.com")
+  #   tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
+  #   randomLink = random.choice(tryTheseLinksList)
+  #   linkText = randomLink.text.strip('u').lower()
+  #   print linkText
+  #   randomLink.click()
+  #   querySummary = driver.find_elements(By.XPATH, "//p[@class='query-summary']/a")
+  #   queryText = querySummary[0].text
+  #   print queryText
+  #   self.assertTrue(linkText == queryText)
 
   # 2.  Verify that the "Recently Seen Ads" are no more than half an hour old.
-  def test_recently_seen_ads_less_than_half_hour_old(self):
+  # def test_recently_seen_ads_less_than_half_hour_old(self):
+  #   driver = self.driver
+  #   driver.get("http://www.moat.com")
+  #   recentlySeenAdsList = driver.find_elements(By.XPATH, "*//li[@class='featured-agencies']/h2")
+  #   for ad in recentlySeenAdsList:
+  #     ageOfAd = int(ad.text.strip(' minutes ago'))
+  #     self.assertTrue(ageOfAd <= 30)
+
+  # 3.  Verify that the ad counts are correct, even when they are over 100.
+  def test_ad_counts_are_correct(self):
     driver = self.driver
     driver.get("http://www.moat.com")
-    recentlySeenAdsList = driver.find_elements(By.XPATH, "*//li[@class='featured-agencies']/h2")
-    for ad in recentlySeenAdsList:
-      ageOfAd = int(ad.text.strip(' minutes ago'))
-      self.assertTrue(ageOfAd <= 30)
-
+    searchInput = driver.find_element_by_name("q")
+    searchInput.send_keys("pizza hut")
+    searchInput.send_keys(Keys.RETURN)
+    element = WebDriverWait(driver, 30).until(
+      EC.presence_of_element_located((By.XPATH, "//div[@class='columns-frame']"))
+      )
+    ads = driver.find_elements(By.XPATH, "*//div[@class='adcontainer']/div[@class='ad']")
+    print ads
 
   def tearDown(self):
     self.driver.close()
