@@ -43,12 +43,11 @@ class MoatSearch(unittest.TestCase):
     driver = self.driver
     driver.get("http://www.moat.com") #load page
     tryTheseLinksList = driver.find_elements(By.XPATH, "*//div[@id='search-suggestions-box']/a")
-    for link in tryTheseLinksList:
-      linkText = link.text.strip('u')
-      link.click()
-      return linkText
+    randomLink = random.choice(tryTheseLinksList)
+    linkText = randomLink.text.strip('u').lower()
+    print linkText
+    randomLink.click()
     querySummary = driver.find_elements(By.XPATH, "//p[@class='query-summary']/a")
-    print querySummary
     queryText = querySummary[0].text
     print queryText
     self.assertTrue(linkText == queryText)
