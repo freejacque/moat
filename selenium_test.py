@@ -4,6 +4,7 @@
 
 import unittest
 import random
+import time
 from sst.actions import *
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -70,34 +71,24 @@ class MoatSearch(unittest.TestCase):
     searchInput = driver.find_element_by_name("q")
     searchInput.send_keys("pizza hut")
     searchInput.send_keys(Keys.RETURN)
-    # element = WebDriverWait(driver, 30).until(
-    #   EC.presence_of_element_located((By.XPATH, "//div[@class='columns-frame']"))
-    #   )
     printedNumOfAds  = driver.find_elements(By.XPATH, "//p[@class='query-summary']")
     siteAdCount = int(printedNumOfAds[0].text.strip(' ads for pizza hut'))
-    numberOfAds = 0
-    while EC.element_to_be_clickable((By.XPATH, "//div[@class='more-holder']/button")):
+    i = 0
+    while i < 3:
+      time.sleep(2)
       moreAdsButton = driver.find_elements(By.XPATH, "//div[@class='more-holder']/button")
-      print moreAdsButton
       moreAdsButton[0].click()
-      print "waiting"
+      print "clicking"
+      i += 1
 
-      if not moreAdsButton[0].is_enabled():
+      if i == 3:
         break
-
+    time.sleep(2)
     ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
-    numberOfAds += int(len(ads))
+    numberOfAds = int(len(ads))
+    print siteAdCount
     print numberOfAds
-    # numberOfAds = 0
-
-
-    # found = False
-    # while driver.find_elements(By.XPATH, "//div[@class='more-holder']/button"); present == true
-    # moreAdsButton = driver.find_elements(By.XPATH, "//div[@class='more-holder']/button")
-    # moreAdsButton[0].click()
-    # ads = driver.find_elements(By.XPATH, "*//div[@class='ad  ']")
-    # numberOfAds += int(len(ads))
-    # print numberOfAds
+    self.assertTrue(siteAdCount == numberOfAds)
 
   def tearDown(self):
     self.driver.close()
